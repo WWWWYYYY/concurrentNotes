@@ -1,6 +1,6 @@
 package com.concurrent.test.lock;
 
-import com.concurrent.test.ThreadSleepTool;
+import com.concurrent.utils.ThreadSleepTool;
 
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
@@ -16,8 +16,8 @@ public class LockConditionTest {
     private static final Condition condition = reentrantLock.newCondition();
     private static final Condition condition2 = reentrantLock.newCondition();
 
-    public static void main(String[] args) {
-        test2();
+    public static void main(String[] args) throws InterruptedException {
+        test5();
     }
 
     public static void test1() {
@@ -105,6 +105,12 @@ public class LockConditionTest {
         reentrantLock.lock();
         condition2.signal();
         reentrantLock.unlock();
+
+    }
+
+    public static void test5() throws InterruptedException {
+        reentrantLock.lock();
+                    condition.await();
 
     }
 }

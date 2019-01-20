@@ -1,6 +1,6 @@
 package com.concurrent.test.lock;
 
-import com.concurrent.test.ThreadSleepTool;
+import com.concurrent.utils.ThreadSleepTool;
 
 import java.util.Random;
 import java.util.concurrent.locks.ReentrantReadWriteLock;

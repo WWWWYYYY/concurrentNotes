@@ -1,6 +1,6 @@
 package com.concurrent.test.lock;
 
-import com.concurrent.test.ThreadSleepTool;
+import com.concurrent.utils.ThreadSleepTool;
 
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
@@ -12,9 +12,9 @@ public class ReentrantLockTest {
     private static ReentrantLock reentrantLock =new ReentrantLock(false);
     private static CyclicBarrier cyclicBarrier =new CyclicBarrier(10);
     public static void main(String[] args) {
-        test3();
+//        test3();
 //        test2();
-//        test1();
+        test4();
     }
 
     public static void test1(){
@@ -93,4 +93,17 @@ public class ReentrantLockTest {
         ThreadSleepTool.sleep(1000);
         t.interrupt();
     }
+
+    public static void test4(){
+        for (int i =0;i<2;i++){
+            Thread t = new Thread(){
+                @Override
+                public void run() {
+                    reentrantLock.lock();//每次只有一个线程能够获取到锁
+                }
+            };
+            t.start();
+        }
+    }
+
 }

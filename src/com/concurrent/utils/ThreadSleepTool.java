@@ -1,4 +1,4 @@
-package com.concurrent.test;
+package com.concurrent.utils;
 
 public class ThreadSleepTool {
 
