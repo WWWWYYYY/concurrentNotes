@@ -9,12 +9,16 @@ public class AtomicStampedReferenceTest {
 
     public static void main(String[] args) {
 
-        atomicStampedReference.compareAndSet(
-                atomicStampedReference.getReference(),
-                "ddd",
-                atomicStampedReference.getStamp(),
-                atomicStampedReference.getStamp()+1
-        );
+        for(;;){
+            boolean result =atomicStampedReference.compareAndSet(
+                    atomicStampedReference.getReference(),
+                    "ddd",
+                    atomicStampedReference.getStamp(),
+                    atomicStampedReference.getStamp()+1
+            );
+            if (result)break;
+        }
+
         System.out.println(atomicStampedReference.getReference());
     }
 }

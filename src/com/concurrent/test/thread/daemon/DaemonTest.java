@@ -1,10 +1,10 @@
-package com.concurrent.test.thread.daemaon;
+package com.concurrent.test.thread.daemon;
 
 /**
  * 守护线程和程序同生共死
  * 实际例子：垃圾回收线程、引用回收线程。
  */
-public class DaemaonTest {
+public class DaemonTest {
 
     public static void main(String[] args) throws InterruptedException {
         Thread t = new Thread("守护线程"){

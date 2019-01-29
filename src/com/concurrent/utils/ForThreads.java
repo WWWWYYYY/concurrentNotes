@@ -4,17 +4,19 @@ package com.concurrent.utils;
  * 方便创建一个或多个线程
  */
 public abstract class ForThreads {
-    public  void doWork(int count){
+    public  Thread[] doWork(int count){
         if (count<0) throw new IllegalArgumentException();
+        Thread[] threads = new Thread[count];
         for (int i=0;i<count;i++){
-            Thread t =new Thread("线程"+i){
+            threads[i] =new Thread("线程"+i){
                 @Override
                 public void run() {
                     running();
                 }
             };
-            t.start();
+            threads[i].start();
         }
+        return threads;
     }
 
     protected abstract  void running();

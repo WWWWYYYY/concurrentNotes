@@ -29,4 +29,7 @@ public class PrintUtils {
     public static void printCurrentThreadCountDown() {
         System.out.println(Thread.currentThread().getName()+"invoke countDown");
     }
+    public static void log(String str){
+        System.out.println(Thread.currentThread().getName()+"------"+str);
+    }
 }
