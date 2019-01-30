@@ -1,0 +1,37 @@
+如果在遇到批量处理（文件IO\网络IO）,计算密集型 耗时计算（fork/join）等等类型的任务、优先考虑使用多线程。
+
+将一个工作JobInfo分解成多个任务task
+
+开发步骤
+
+1、编写PendingJobPool；比较不能随便new一个线程池，必须封装一个工具类来使用
+    类下定义
+    private static ExecutorService taskExecutor 线程池
+    private static ConcurrentHashMap<String, JobInfo<?>> jobInfoMap 任务上下文
+    private static BlockingQueue<Runnable> queue   task任务队列（task队列中同时包含多个job的task）
+
+    提供：
+        注册job、
+        移除job（job完成时）、
+        put task、
+        获取某个job的task详情队列、
+        获取某个job进度 等功能
+
+2、定义ITaskProcesser接口。给开发人员实现业务逻辑
+
+3、CheckJobProcess任务清除处理器；主要作用创建了守护线程用于清除jobInfoMap已经完成的job。
+    提供 putJob功能
+    类下定义：
+    private static DelayQueue<DelayVo<String>> queue    存储已完成的job的jobName
+    private static class FetchJob implements Runnable 守护线程 获取queue中元素（即jobName）并清除jobInfoMap已经完成的job。
+
+4、JobInfo 对应job
+    类下定义：
+        private final ITaskProcesser<?,?> taskProcesser; 业务处理器
+        private final String jobName;   名称 唯一标识
+        private final int jobLength;    一个job中的task长度
+        private LinkedBlockingDeque<TaskResult<R>> taskDetailQueue; task队列
+
+    提供：
+        job进度查询
+        获取taskList 将job下已经处理完成的task返回出去
