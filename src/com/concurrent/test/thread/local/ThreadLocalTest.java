@@ -2,6 +2,8 @@ package com.concurrent.test.thread.local;
 
 /**
  * 每个线程都有独立的ThreadLocal副本，不会相互影响，在thread类中每个线程绑定了一个threadlocal，所以特别要注意线程池中的线程不能乱用threadlocal来存数据
+ *
+ * 错误的例子
  */
 public class ThreadLocalTest {
 
