@@ -5,6 +5,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class AtomicIntegerTest {
 
     private static AtomicInteger num =new AtomicInteger(0);
+//    private static final Unsafe unsafe = Unsafe.getUnsafe();
 
     public static void main(String[] args) {
         for (int i=0;i<8;i++){

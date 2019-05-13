@@ -29,9 +29,11 @@ public class MyExclusiveLock implements Lock {
         @Override
         protected boolean tryAcquire(int arg) {
 
-            if (getExclusiveOwnerThread()==Thread.currentThread())return true;//可重入锁核心代码 当前线程是占有锁的线程，重复调用这个方法就不会阻塞在外面了
-            if (isFair&&!hasQueuedPredecessors()){//公平锁的关键代码就是是否要从阻塞队列中先获取锁
-                return true;
+            if (getExclusiveOwnerThread()==Thread.currentThread()){return true;}//可重入锁核心代码 当前线程是占有锁的线程，重复调用这个方法就不会阻塞在外面了
+            else {
+                if (isFair&&!hasQueuedPredecessors()){//公平锁的关键代码就是是否要从阻塞队列中先获取锁
+                    return true;
+                }
             }
 
             if (getExclusiveOwnerThread()==null){

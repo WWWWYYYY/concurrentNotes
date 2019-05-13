@@ -10,18 +10,19 @@ import java.util.concurrent.TimeUnit;
 public class CountDownLatchTest {
     private static CountDownLatch countDownLatch =new CountDownLatch(3);
     public static void main(String[] args) throws InterruptedException {
-        test2();
-//        test1();
+//        test2();
+        test1();
     }
 
     private static void test1() throws InterruptedException {
         new ForThreads(){
             @Override
             protected void running() {
-                ThreadSleepTool.sleep(2000);
-                countDownLatch.countDown();
+                    ThreadSleepTool.sleep(2000);
+                    PrintUtils.log(" countDown");
+                    countDownLatch.countDown();
             }
-        }.doWork(1);
+        }.doWork(3);
 
         PrintUtils.printCurrentThreadBlock();
 

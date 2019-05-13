@@ -50,6 +50,7 @@ public class VolatileTest {
 
     /**
      * 对于volatile修饰的变量 多线程同时修改则出现数据不安全的情况
+     * num++属于复合操作 volatile就不起作用了
      */
     public static void test2(){
         Thread t1 =new Thread("t1"){

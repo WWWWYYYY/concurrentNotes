@@ -17,12 +17,23 @@ public class PendingJobPool {
     //必须使用有界；防止任务量过载导致服务器崩溃
     private static BlockingQueue<Runnable> queue = new ArrayBlockingQueue<>(5000);
     private static int CPU_COUNT = Runtime.getRuntime().availableProcessors();
+    /**
+     * 执行task的线程池
+     */
     private static ExecutorService taskExecutor = new ThreadPoolExecutor(CPU_COUNT, CPU_COUNT, 0L, TimeUnit.SECONDS, queue);
 
+    /**
+     * jobInfo的上线文
+     */
     private static ConcurrentHashMap<String, JobInfo<?>> jobInfoMap = new ConcurrentHashMap<>();
 
+    /**
+     * 完成任务后的处理器
+     */
     private static CheckJobProcess checkJobProcess = CheckJobProcess.getInstance();
 
+
+    //单例模式：类加载模式
     private PendingJobPool() {
     }
 
@@ -34,6 +45,9 @@ public class PendingJobPool {
         return PendingJobPoolHolder.pendingJobPool;
     }
 
+    /**
+     * job注册
+     */
     public <R> boolean resisterJob(String jobName, int jobLength, ITaskProcesser<?, ?> taskProcesser, long expireTime) {
         JobInfo<R> jobInfo = new JobInfo<>(jobName, jobLength, taskProcesser, expireTime);
         //putIfAbsent判断map中是否已经存在，不存在就put，已经存在就get出来
@@ -46,6 +60,8 @@ public class PendingJobPool {
     /**
      *  客户端在调用putTask过程中，框架只知道jobLength，所以putTask调用次数是否是jobLength的次数，由开发人员把控
      *  毕竟这个框架不是给第三方用的，是给内部开发人员使用。所以该方法的调用次数控制如果没有达到jobLength，那就是调用时除了问题
+     *
+     *  并且如果任务长度为10000也应该一次性将一个list.size=10000的list传入。这样也不合理；所有最优的方式还是一个一个的接收任务
      */
     public <T, R> boolean putTask(String jobName, T data) {
         JobInfo<R> jobInfo = getJob(jobName);

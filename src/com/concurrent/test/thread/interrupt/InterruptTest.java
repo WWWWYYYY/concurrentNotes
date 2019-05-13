@@ -14,7 +14,7 @@ public class InterruptTest {
 
                         Thread.sleep(1000);
                         System.out.println("123");
-                    } catch (InterruptedException e) {
+                    } catch (InterruptedException e) {//当cpu接收到信号对线程进行中断时，会马上被捕获，不管上面的代码执行到哪一步。这是遵循happens-before的规则
                         e.printStackTrace();
                         Thread.currentThread().interrupt();//中断异常后  线程的中断状态将被重置变为false。
                     }
