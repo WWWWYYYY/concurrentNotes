@@ -2,6 +2,9 @@ package com.concurrent.data.structure;
 
 import com.concurrent.utils.PrintUtils;
 
+/**
+ * 使用链表实现队列
+ */
 public class MyQueueTest {
 
     static Node<String> head =new Node<>("");

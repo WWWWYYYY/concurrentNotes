@@ -11,7 +11,7 @@ public class SemaphoreTest {
 
     private static Semaphore semaphore = new Semaphore(3);
     public static void main(String[] args) {
-        test4();
+        test1();
     }
     //正常例子
     public static void test1(){
@@ -21,7 +21,7 @@ public class SemaphoreTest {
                 public void run() {
                     try {
                         semaphore.acquire(1);
-                        semaphore.tryAcquire();
+//                        semaphore.tryAcquire();
                         System.out.println(Thread.currentThread().getName()+"获取到资源");
                         Thread.sleep(5000);
                         System.out.println(Thread.currentThread().getName()+"释放了资源");

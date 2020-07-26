@@ -26,7 +26,7 @@ public class SyncTest {
         Thread.sleep(3000);
     }
     public static void main(String[] args) {
-        test5();
+        test6();
     }
 
     //静态方法+synchronized 获取类锁
@@ -172,5 +172,42 @@ public class SyncTest {
 
         t1.start();
         t2.start();
+    }
+
+    /**
+     * 锁不同的资源，不妨碍其他线程的执行，
+     * 类锁影响不了实例锁，实例锁也影响不了类锁
+     * 对象a和对象b的锁也是互不影响的
+     */
+    public static void  test6(){
+        Thread t1 =new Thread("t1"){
+            @Override
+            public void run() {
+                synchronized (instance){//同步块范围占用实例锁
+                    try {
+                        System.out.println("t1 占用instance 3s");
+                        sleep(3000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        };
+        Thread t2 =new Thread("t2"){
+            @Override
+            public void run() {
+                synchronized (SyncTest.class){//同步块范围占用实例锁
+                    try {
+                        System.out.println("t2 占用instance 3s");
+                        sleep(3000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        };
+
+        t2.start();
+        t1.start();
     }
 }

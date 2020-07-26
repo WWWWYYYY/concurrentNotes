@@ -57,9 +57,33 @@ public class ForkJoinTest {
     }
 
     public static void main(String[] args) throws InterruptedException {
-        test1();
+//        test1();
 //        test2();
 //        test3();
+        final List<Integer> list = new ArrayList<>(100);
+        for (int i = 0; i < 100; i++) {
+            list.add(i);
+        }
+        for (int i = 1; i <= 50; i++) {
+            new Thread("test-" + i) {
+                String currentThreaName = this.getName();
+                @Override
+                public void run() {
+                    list.parallelStream()
+                            .forEach(numbser -> {
+                                Thread c = Thread.currentThread();
+                                System.out.println(currentThreaName + "===> "
+                                        + c.getClass().getName() + ":" + c.getName() + ":" + c.getId()+"："+numbser);
+                                try {
+                                    Thread.sleep(100);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                            });
+                }
+            }.start();
+        }
+        Thread.sleep(Integer.MAX_VALUE);
 
     }
 
@@ -69,7 +93,7 @@ public class ForkJoinTest {
      */
     public static void test1() throws InterruptedException {
         ForkJoinPool pool = new ForkJoinPool(5);
-        RecursiveAction action = new MyTask(new File("/Users/mac/Downloads/腾讯课堂视频/（8）高性能Netty框架"));
+        RecursiveAction action = new MyTask(new File("/Users/mac/Downloads/腾讯课堂视频"));
         pool.execute(action);
         System.out.println("main");
         action.join();//让任务完成后才往下执行，保证任务完全执行。不管子任务是否调用了join，主任务一定要调用join保证整个任务的完整性，子任务调用join可以根据需求的是否需要。
